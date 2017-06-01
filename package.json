@@ -1,0 +1,20 @@
+{
+  "name": "macroable",
+  "version": "1.0.0",
+  "description": "A simple ES6 class that can be extended to provide macros and getters functionality",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "resetable"
+  ],
+  "author": "amanvirk,adonisjs",
+  "license": "MIT",
+  "devDependencies": {
+    "japa": "^1.0.1"
+  },
+  "dependencies": {
+    "node-exceptions": "^2.0.1"
+  }
+}
