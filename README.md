@@ -1,131 +1,158 @@
 # Macroable
+> Extend `class` prototype in style 😎
 
-Macroable is a small ES6 class that can be extended to add functionality of macros and getters to your own class. 
+[![travis-image]][travis-url]
+[![appveyor-image]][appveyor-url]
+[![coveralls-image]][coveralls-url]
+[![npm-image]][npm-url]
+![](https://img.shields.io/badge/Uses-Typescript-294E80.svg?style=flat-square&colorA=ddd)
 
-It is helpful if you want to expose an API to get your classes extended. 
+Macroable is a simple class that your classes can extend in order to expose an API for extending the class. Let's see how a class can be extended without Macroable first.
 
-> This library is used by AdonisJs to offer extend interface for core class.
+## Traditional approach
+
+```js
+class Foo {}
+module.exports = Foo
+```
+
+Someone can extend it follows.
+
+```js
+const Foo = require('./Foo')
+Foo.prototype.greet = function () {
+  return 'Hello!'
+}
+
+// or add getter as follow
+Object.defineProperty(Foo.prototype, 'username', {
+  get: function () {
+    return 'virk'
+  }
+})
+```
+
+## Using macroable it's simpler
+
+```js
+const { Macroable } from 'macroable'
+
+class Foo extends Macroable {
+}
+
+Foo._macros = {}
+Foo._getters = {}
+
+module.exports = Foo
+```
+
+```js
+const Foo = require('./Foo')
+
+Foo.macro('greet', function () {
+  return 'Hello!'
+})
+
+Foo.getter('username', function () {
+  return 'virk'
+})
+```
+
+You can see the API is simpler and less verbose. However, their are couple more benefits to using Macroable.
+
+1. You can add singleton getters, which are evaluated only once and then cached value is returned.
+2. Cleanup all `macros` and `getters` added using Macroable.
 
 ## Installation
-As always, pull it from `npm`.
-
 ```bash
-npm i --save macroable
+npm i macroable
 ```
 
 ## Usage
-
 ```js
-const Macroable = require('macroable')
+const { Macroable } from 'macroable'
 
-class User extends Macroable {
-
+class Foo extends Macroable {
 }
 
-// it's required to define empty objects for macros and getters.
-User._macros = {}
-User._getters = {}
+Foo._macros = {}
+Foo._getters = {}
+
+module.exports = Foo
 ```
 
-<br >
+## API
 
----
-
-<br >
-
-
-Once your class extends `Macroable` class, it get's a bunch of static methods to define **macros** and **getters**.
-
-## Using Macros
+#### macro(name, callback) => void
+Add a function to the prototype
 
 ```js
-User.macro('getUsers', function () {
-  // do some work
+Foo.macro('greet', function (name) {
+  return `Hello ${name}!`
 })
 ```
 
-and now you can use the **method** from the class instance.
+#### hasMacro(name) => boolean
+Find if macro exists.
 
 ```js
-const user = new User()
-user.getUsers()
+Foo.hasMacro('greet')
 ```
 
-<br >
-
----
-
-<br >
-
-## Using Getters
-Getters are values evaluated everytime someone access them.
+#### getter(name, callback, isSingleton?) => void
+Add getter to the prototype and optionally make it singleton.
 
 ```js
-User.getter('username', function () {
-	// return username
-})
-```
-
-and now you can use the **property** from the class instance
-
-```js
-const user = new User()
-user.username
-```
-
-<br >
-
----
-
-<br >
-
-## Singleton Getters
-
-Calling the getter callback everytime may be unrequired, since you do not want to re-compute the values. A **singleton** getter can also be defined.
-
-```js
-User.getter('username', function () {
-	// I am only called once
+Foo.getter('username', function () {
+  return 'virk'
 }, true)
 ```
 
-```js
-const user = new User()
-
-user.username // invokes callback and caches value
-user.username // returns from cache
-```
-
-<br >
-
----
-
-<br >
-
-## Hydrating Class
-If for some reason you want to remove all getters and macros, you can call the `hydrate` method.
+#### hasGetter(name) => boolean
+Find if getter exists.
 
 ```js
-User.macro('getUsers', callback)
-
-User.hasMacro('getUsers') // true
-
-User.hydrate()
-
-User.hasMacro('getUsers') // false
+Foo.hasGetter('greet')
 ```
 
-<br >
-
----
-
-<br >
-
-## Checking Existence
-
-You can also find whether a **getter** or **macro** already exists or not.
+#### hydrate
+Remove all macros and getters added using `Macroable`.
 
 ```js
-User.hasMacro('getUsers')
-User.hasGetter('username')
+Foo.getter('username', function () {
+  return 'virk'
+}, true)
+
+Foo.hydrate()
+
+Foo.hasGetter('username') // false
 ```
+
+## Change log
+
+The change log can be found in the [CHANGELOG.md](CHANGELOG.md) file.
+
+## Contributing
+
+Everyone is welcome to contribute. Please go through the following guides, before getting started.
+
+1. [Contributing](https://adonisjs.com/contributing)
+2. [Code of conduct](https://adonisjs.com/code-of-conduct)
+
+
+## Authors & License
+[thetutlage](https://github.com/thetutlage) and [contributors](https://github.com/poppinss/macroable/graphs/contributors).
+
+MIT License, see the included [MIT](LICENSE.md) file.
+
+[travis-image]: https://img.shields.io/travis/poppinss/macroable/master.svg?style=flat-square&logo=travis
+[travis-url]: https://travis-ci.org/poppinss/macroable "travis"
+
+[appveyor-image]: https://img.shields.io/appveyor/ci/thetutlage/macroable/master.svg?style=flat-square&logo=appveyor
+[appveyor-url]: https://ci.appveyor.com/project/thetutlage/macroable "appveyor"
+
+[coveralls-image]: https://img.shields.io/coveralls/poppinss/macroable/master.svg?style=flat-square
+[coveralls-url]: https://coveralls.io/github/poppinss/macroable "coveralls"
+
+[npm-image]: https://img.shields.io/npm/v/macroable.svg?style=flat-square&logo=npm
+[npm-url]: https://npmjs.org/package/macroable "npm"
