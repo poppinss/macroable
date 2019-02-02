@@ -1,3 +1,13 @@
+<a name="2.0.1"></a>
+## [2.0.1](https://github.com/poppinss/macroable/compare/2.0.0...2.0.1) (2019-02-02)
+
+
+### Features
+
+* **macroable:** expose static interface ([f3720ce](https://github.com/poppinss/macroable/commit/f3720ce))
+
+
+
 <a name="2.0.0"></a>
 # 2.0.0 (2018-10-28)
 
