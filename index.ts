@@ -9,8 +9,14 @@
  * file that was distributed with this source code.
 */
 
-type IMacroableFn = (...args: []) => any
-type IMacroableMap = { [key: string]: IMacroableFn }
+type MacroableFn = (...args: []) => any
+type MacroableMap = { [key: string]: MacroableFn }
+
+export interface MacroableConstructorContract {
+  macro (name: string, callback: MacroableFn),
+  getter (name: string, callback: MacroableFn, singleton?: boolean),
+  hydrate (),
+}
 
 /**
  * Macroable is an abstract class to add ability to extend your class
@@ -22,8 +28,8 @@ type IMacroableMap = { [key: string]: IMacroableFn }
  * 2. Can define singleton getters.
  */
 export abstract class Macroable {
-  protected static _macros: IMacroableMap = {}
-  protected static _getters: IMacroableMap = {}
+  protected static _macros: MacroableMap = {}
+  protected static _getters: MacroableMap = {}
 
   /**
    * Add a macro to the class. This method is a better to manually adding
@@ -38,7 +44,7 @@ export abstract class Macroable {
    * })
    * ```
    */
-  public static macro (name: string, callback: IMacroableFn) {
+  public static macro (name: string, callback: MacroableFn) {
     this._macros[name] = callback
     this.prototype[name] = callback
   }
@@ -46,7 +52,7 @@ export abstract class Macroable {
   /**
    * Return the existing macro or null if it doesn't exists
    */
-  public static getMacro (name: string): IMacroableFn | undefined {
+  public static getMacro (name: string): MacroableFn | undefined {
     return this._macros[name]
   }
 
@@ -77,7 +83,7 @@ export abstract class Macroable {
    * console.log(new Macroable().time)
    * ```
    */
-  public static getter (name: string, callback: IMacroableFn, singleton: boolean = false) {
+  public static getter (name: string, callback: MacroableFn, singleton: boolean = false) {
     const wrappedCallback = singleton ? function wrappedCallback () {
       const propName = `_${name}_`
       this[propName] = this[propName] || callback.bind(this)()
@@ -96,7 +102,7 @@ export abstract class Macroable {
   /**
    * Return the existing getter or null if it doesn't exists
    */
-  public static getGetter (name: string): IMacroableFn | undefined {
+  public static getGetter (name: string): MacroableFn | undefined {
     return this._getters[name]
   }
 
