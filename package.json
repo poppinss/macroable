@@ -1,6 +1,6 @@
 {
   "name": "macroable",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A simple ES6 class that can be extended to provide macros and getters functionality",
   "main": "build/index.js",
   "files": [
