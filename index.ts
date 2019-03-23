@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
 */
 
-type MacroableFn = (...args: []) => any
+type MacroableFn = (...args: any[]) => any
 type MacroableMap = { [key: string]: MacroableFn }
 
 export interface MacroableConstructorContract {

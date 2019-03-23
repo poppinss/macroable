@@ -1,3 +1,13 @@
+<a name="2.0.2"></a>
+## [2.0.2](https://github.com/poppinss/macroable/compare/2.0.1...2.0.2) (2019-03-23)
+
+
+### Bug Fixes
+
+* **type:** accept rest params as  in MacroableFn ([e65ded2](https://github.com/poppinss/macroable/commit/e65ded2))
+
+
+
 <a name="2.0.1"></a>
 ## [2.0.1](https://github.com/poppinss/macroable/compare/2.0.0...2.0.1) (2019-02-02)
 
