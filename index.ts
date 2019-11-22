@@ -7,12 +7,12 @@
  * file that was distributed with this source code.
 */
 
-type MacroableFn = (...args: any[]) => any
-type MacroableMap = { [key: string]: MacroableFn }
+type MacroableFn<T> = (this: T, ...args: any[]) => any
+type MacroableMap = { [key: string]: MacroableFn<any> }
 
-export interface MacroableConstructorContract {
-  macro (name: string, callback: MacroableFn),
-  getter (name: string, callback: MacroableFn, singleton?: boolean),
+export interface MacroableConstructorContract<T extends any> {
+  macro (name: string, callback: MacroableFn<T>),
+  getter (name: string, callback: MacroableFn<T>, singleton?: boolean),
   hydrate (),
 }
 
@@ -42,7 +42,7 @@ export abstract class Macroable {
    * })
    * ```
    */
-  public static macro (name: string, callback: MacroableFn) {
+  public static macro<T extends any = any> (name: string, callback: MacroableFn<T>) {
     this._macros[name] = callback
     this.prototype[name] = callback
   }
@@ -50,7 +50,7 @@ export abstract class Macroable {
   /**
    * Return the existing macro or null if it doesn't exists
    */
-  public static getMacro (name: string): MacroableFn | undefined {
+  public static getMacro (name: string): MacroableFn<any> | undefined {
     return this._macros[name]
   }
 
@@ -81,7 +81,11 @@ export abstract class Macroable {
    * console.log(new Macroable().time)
    * ```
    */
-  public static getter (name: string, callback: MacroableFn, singleton: boolean = false) {
+  public static getter<T extends any = any> (
+    name: string,
+    callback: MacroableFn<T>,
+    singleton: boolean = false,
+  ) {
     const wrappedCallback = singleton ? function wrappedCallback () {
       const propName = `_${name}_`
       this[propName] = this[propName] || callback.bind(this)()
@@ -100,7 +104,7 @@ export abstract class Macroable {
   /**
    * Return the existing getter or null if it doesn't exists
    */
-  public static getGetter (name: string): MacroableFn | undefined {
+  public static getGetter (name: string): MacroableFn<any> | undefined {
     return this._getters[name]
   }
 
