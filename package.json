@@ -42,9 +42,7 @@
     "ts-node": "^8.5.4",
     "typescript": "^3.7.3"
   },
-  "dependencies": {
-    "node-exceptions": "^4.0.1"
-  },
+  "dependencies": {},
   "nyc": {
     "exclude": [
       "test.ts"
