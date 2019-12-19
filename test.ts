@@ -11,11 +11,11 @@ import test from 'japa'
 import { Macroable } from './index'
 
 class Parent extends Macroable {}
-Parent['_macros'] = {}
-Parent['_getter'] = {}
+Parent['macros'] = {}
+Parent['getters'] = {}
 
 test.group('Macroable', (group) => {
-  group.beforeEach(() => {
+  group.afterEach(() => {
     Parent.hydrate()
   })
 
@@ -70,20 +70,20 @@ test.group('Macroable', (group) => {
 
     Parent.hydrate()
 
-    assert.deepEqual(Parent['_macros'], {})
-    assert.deepEqual(Parent['_getters'], {})
+    assert.deepEqual(Parent['macros'], {})
+    assert.deepEqual(Parent['getters'], {})
     assert.equal(new Parent()['foo'], undefined)
     assert.equal(new Parent()['bar'], undefined)
   })
 
   test('static methods should not be shared', (assert) => {
     class Foo extends Macroable {}
-    Foo['_macros'] = {}
-    Foo['_getters'] = {}
+    Foo['macros'] = {}
+    Foo['getters'] = {}
 
     class Bar extends Macroable {}
-    Bar['_macros'] = {}
-    Bar['_getters'] = {}
+    Bar['macros'] = {}
+    Bar['getters'] = {}
 
     Foo.macro('foo', function foo () {})
     assert.isFunction(Foo.getMacro('foo'))
@@ -123,5 +123,14 @@ test.group('Macroable', (group) => {
     assert.equal(m1['foo'], 'bar')
     assert.equal(m1['foo'], 'bar')
     assert.equal(getterCalledCounts, 2)
+  })
+
+  test('raise exception when macros and getters are not initiated as objects', (assert) => {
+    class Foo extends Macroable {}
+    const fn = () => new Foo()
+    assert.throw(
+      fn,
+      'Set static properties "macros = {}" and "getters = {}" on the class for the macroable to work.',
+    )
   })
 })

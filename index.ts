@@ -26,8 +26,16 @@ export interface MacroableConstructorContract<T extends any> {
  * 2. Can define singleton getters.
  */
 export abstract class Macroable {
-  protected static _macros: MacroableMap = {}
-  protected static _getters: MacroableMap = {}
+  protected static macros: MacroableMap = {}
+  protected static getters: MacroableMap = {}
+
+  constructor () {
+    if (!this.constructor.hasOwnProperty('macros') || !this.constructor.hasOwnProperty('getters')) {
+      throw new Error(
+        'Set static properties "macros = {}" and "getters = {}" on the class for the macroable to work.',
+      )
+    }
+  }
 
   /**
    * Add a macro to the class. This method is a better to manually adding
@@ -43,7 +51,7 @@ export abstract class Macroable {
    * ```
    */
   public static macro<T extends any = any> (name: string, callback: MacroableFn<T>) {
-    this._macros[name] = callback
+    this.macros[name] = callback
     this.prototype[name] = callback
   }
 
@@ -51,7 +59,7 @@ export abstract class Macroable {
    * Return the existing macro or null if it doesn't exists
    */
   public static getMacro (name: string): MacroableFn<any> | undefined {
-    return this._macros[name]
+    return this.macros[name]
   }
 
   /**
@@ -92,7 +100,7 @@ export abstract class Macroable {
       return this[propName]
     } : callback
 
-    this._getters[name] = wrappedCallback
+    this.getters[name] = wrappedCallback
 
     Object.defineProperty(this.prototype, name, {
       get: wrappedCallback,
@@ -105,7 +113,7 @@ export abstract class Macroable {
    * Return the existing getter or null if it doesn't exists
    */
   public static getGetter (name: string): MacroableFn<any> | undefined {
-    return this._getters[name]
+    return this.getters[name]
   }
 
   /**
@@ -119,9 +127,9 @@ export abstract class Macroable {
    * Cleanup getters and macros from the class
    */
   public static hydrate () {
-    Object.keys(this._macros).forEach((key) => Reflect.deleteProperty(this.prototype, key))
-    Object.keys(this._getters).forEach((key) => Reflect.deleteProperty(this.prototype, key))
-    this._macros = {}
-    this._getters = {}
+    Object.keys(this.macros).forEach((key) => Reflect.deleteProperty(this.prototype, key))
+    Object.keys(this.getters).forEach((key) => Reflect.deleteProperty(this.prototype, key))
+    this.macros = {}
+    this.getters = {}
   }
 }
