@@ -1,7 +1,9 @@
+<div align="center"><img src="https://res.cloudinary.com/adonisjs/image/upload/q_100/v1557762307/poppinss_iftxlt.jpg" width="600px"></div>
+
 # Macroable
 > Extend `class` prototype in style 😎
 
-[![travis-image]][travis-url] [![appveyor-image]][appveyor-url] [![coveralls-image]][coveralls-url] [![typescript-image]][typescript-url] [![npm-image]][npm-url] [![license-image]][license-url]
+[![circleci-image]][circleci-url] [![typescript-image]][typescript-url] [![npm-image]][npm-url] [![license-image]][license-url]
 
 Base class for exposing external API to extend the class prototype in a more declarative way.
 
@@ -87,14 +89,8 @@ Foo.greet // undefined
 Foo.username // undefined
 ```
 
-[travis-image]: https://img.shields.io/travis/poppinss/macroable/master.svg?style=for-the-badge&logo=travis
-[travis-url]: https://travis-ci.org/poppinss/macroable "travis"
-
-[appveyor-image]: https://img.shields.io/appveyor/ci/thetutlage/macroable/master.svg?style=for-the-badge&logo=appveyor
-[appveyor-url]: https://ci.appveyor.com/project/thetutlage/macroable "appveyor"
-
-[coveralls-image]: https://img.shields.io/coveralls/poppinss/macroable/master.svg?style=for-the-badge
-[coveralls-url]: https://coveralls.io/github/poppinss/macroable "coveralls"
+[circleci-image]: https://img.shields.io/circleci/project/github/poppinss/macroable/master.svg?style=for-the-badge&logo=circleci
+[circleci-url]: https://circleci.com/gh/poppinss/macroable "circleci"
 
 [typescript-image]: https://img.shields.io/badge/Typescript-294E80.svg?style=for-the-badge&logo=typescript
 [typescript-url]:  "typescript"
