@@ -1,5 +1,5 @@
 /*
- * macroable
+ * @poppinss/macroable
  *
  * (c) Harminder Virk <virk@adonisjs.com>
  *
@@ -11,9 +11,9 @@ type MacroableFn<T> = (this: T, ...args: any[]) => any
 type MacroableMap = { [key: string]: MacroableFn<any> }
 
 export interface MacroableConstructorContract<T extends any> {
-  macro (name: string, callback: MacroableFn<T>),
-  getter (name: string, callback: MacroableFn<T>, singleton?: boolean),
-  hydrate (),
+  macro (name: string, callback: MacroableFn<T>): void
+  getter (name: string, callback: MacroableFn<T>, singleton?: boolean): void
+  hydrate (): void
 }
 
 /**
