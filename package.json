@@ -27,18 +27,18 @@
   "license": "MIT",
   "devDependencies": {
     "@adonisjs/mrm-preset": "^2.2.3",
-    "@types/node": "^12.12.21",
+    "@types/node": "^13.1.1",
     "commitizen": "^4.0.3",
     "cz-conventional-changelog": "^3.0.2",
     "del-cli": "^3.0.0",
-    "eslint": "^6.7.2",
-    "eslint-plugin-adonis": "^1.0.4",
+    "eslint": "^6.8.0",
+    "eslint-plugin-adonis": "^1.0.5",
     "husky": "^3.1.0",
     "japa": "^3.0.1",
     "mrm": "^2.0.2",
     "np": "^5.2.1",
     "ts-node": "^8.5.4",
-    "typescript": "^3.7.3"
+    "typescript": "^3.7.4"
   },
   "dependencies": {},
   "nyc": {

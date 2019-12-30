@@ -26,11 +26,11 @@ export interface MacroableConstructorContract<T extends any> {
  * 2. Can define singleton getters.
  */
 export abstract class Macroable {
-  protected static macros: MacroableMap = {}
-  protected static getters: MacroableMap = {}
+  protected static macros: MacroableMap
+  protected static getters: MacroableMap
 
   constructor () {
-    if (!this.constructor.hasOwnProperty('macros') || !this.constructor.hasOwnProperty('getters')) {
+    if (!this.constructor['macros'] || !this.constructor['getters']) {
       throw new Error(
         'Set static properties "macros = {}" and "getters = {}" on the class for the macroable to work.',
       )
