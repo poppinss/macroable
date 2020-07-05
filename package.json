@@ -1,74 +1,78 @@
 {
-  "name": "macroable",
-  "version": "4.0.4",
-  "description": "A simple ES6 class that can be extended to provide macros and getters functionality",
-  "main": "build/index.js",
-  "files": [
-    "build/index.d.ts",
-    "build/index.js"
-  ],
-  "scripts": {
-    "mrm": "mrm --preset=@adonisjs/mrm-preset",
-    "pretest": "npm run lint",
-    "test": "node japaFile.js",
-    "clean": "del build",
-    "compile": "npm run lint && npm run clean && tsc",
-    "build": "npm run compile",
-    "commit": "git-cz",
-    "release": "np",
-    "version": "npm run build",
-    "lint": "eslint . --ext=.ts",
-    "prepublishOnly": "npm run build"
-  },
-  "keywords": [
-    "resetable"
-  ],
-  "author": "amanvirk,adonisjs",
-  "license": "MIT",
-  "devDependencies": {
-    "@adonisjs/mrm-preset": "^2.3.6",
-    "@types/node": "^14.0.14",
-    "commitizen": "^4.1.2",
-    "cz-conventional-changelog": "^3.2.0",
-    "del-cli": "^3.0.1",
-    "eslint": "^7.4.0",
-    "eslint-plugin-adonis": "^1.0.14",
-    "husky": "^4.2.5",
-    "japa": "^3.1.1",
-    "mrm": "^2.3.3",
-    "np": "^6.2.5",
-    "ts-node": "^8.10.2",
-    "typescript": "^3.9.6"
-  },
-  "dependencies": {},
-  "nyc": {
-    "exclude": [
-      "test"
-    ],
-    "extension": [
-      ".ts"
-    ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/poppinss/macroable.git"
-  },
-  "bugs": {
-    "url": "https://github.com/poppinss/macroable/issues"
-  },
-  "homepage": "https://github.com/poppinss/macroable#readme",
-  "husky": {
-    "hooks": {
-      "commit-msg": "node ./node_modules/@adonisjs/mrm-preset/validateCommit/conventional/validate.js"
-    }
-  },
-  "np": {
-    "contents": ".",
-    "anyBranch": false
-  }
+	"name": "macroable",
+	"version": "4.0.4",
+	"description": "A simple ES6 class that can be extended to provide macros and getters functionality",
+	"main": "build/index.js",
+	"files": [
+		"build/index.d.ts",
+		"build/index.js"
+	],
+	"scripts": {
+		"mrm": "mrm --preset=@adonisjs/mrm-preset",
+		"pretest": "npm run lint",
+		"test": "node japaFile.js",
+		"clean": "del build",
+		"compile": "npm run lint && npm run clean && tsc",
+		"build": "npm run compile",
+		"commit": "git-cz",
+		"release": "np",
+		"version": "npm run build",
+		"lint": "eslint . --ext=.ts",
+		"prepublishOnly": "npm run build",
+		"format": "prettier --write ."
+	},
+	"keywords": [
+		"resetable"
+	],
+	"author": "amanvirk,adonisjs",
+	"license": "MIT",
+	"devDependencies": {
+		"@adonisjs/mrm-preset": "^2.3.6",
+		"@types/node": "^14.0.14",
+		"commitizen": "^4.1.2",
+		"cz-conventional-changelog": "^3.2.0",
+		"del-cli": "^3.0.1",
+		"eslint": "^7.4.0",
+		"eslint-config-prettier": "^6.11.0",
+		"eslint-plugin-adonis": "^1.0.14",
+		"eslint-plugin-prettier": "^3.1.4",
+		"husky": "^4.2.5",
+		"japa": "^3.1.1",
+		"mrm": "^2.3.3",
+		"np": "^6.2.5",
+		"prettier": "^2.0.5",
+		"ts-node": "^8.10.2",
+		"typescript": "^3.9.6"
+	},
+	"dependencies": {},
+	"nyc": {
+		"exclude": [
+			"test"
+		],
+		"extension": [
+			".ts"
+		]
+	},
+	"config": {
+		"commitizen": {
+			"path": "cz-conventional-changelog"
+		}
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/poppinss/macroable.git"
+	},
+	"bugs": {
+		"url": "https://github.com/poppinss/macroable/issues"
+	},
+	"homepage": "https://github.com/poppinss/macroable#readme",
+	"husky": {
+		"hooks": {
+			"commit-msg": "node ./node_modules/@adonisjs/mrm-preset/validateCommit/conventional/validate.js"
+		}
+	},
+	"np": {
+		"contents": ".",
+		"anyBranch": false
+	}
 }
