@@ -3,7 +3,7 @@
 # Macroable
 > Extend `class` prototype in style 😎
 
-[![circleci-image]][circleci-url] [![typescript-image]][typescript-url] [![npm-image]][npm-url] [![license-image]][license-url]
+[![circleci-image]][circleci-url] [![typescript-image]][typescript-url] [![npm-image]][npm-url] [![license-image]][license-url] [![audit-report-image]][audit-report-url]
 
 Base class for exposing external API to extend the class prototype in a more declarative way.
 
@@ -43,8 +43,8 @@ Object.defineProperty(Foo.prototype, 'username', {
 
 ## Using macroable
 
-```js
-const { Macroable } from 'macroable'
+```ts
+import { Macroable } from 'macroable'
 
 class Foo extends Macroable {
 }
@@ -52,11 +52,11 @@ class Foo extends Macroable {
 Foo.macros = {}
 Foo.getters = {}
 
-module.exports = Foo
+export default Foo
 ```
 
-```js
-const Foo = require('./Foo')
+```ts
+import Foo from './Foo'
 
 Foo.macro('greet', function () {
   return 'Hello!'
@@ -106,3 +106,6 @@ Foo.username // undefined
 
 [license-image]: https://img.shields.io/npm/l/macroable?color=blueviolet&style=for-the-badge
 [license-url]: LICENSE.md "license"
+
+[audit-report-image]: https://img.shields.io/badge/-Audit%20Report-blueviolet?style=for-the-badge
+[audit-report-url]: https://htmlpreview.github.io/?https://github.com/poppinss/macroable/blob/develop/npm-audit.html "audit-report"
