@@ -136,6 +136,9 @@ test.group('Macroable', (group) => {
 	test('raise exception when macros and getters are not initiated as objects', (assert) => {
 		class Foo extends Macroable {}
 		const fn = () => new Foo()
-		assert.throw(fn, 'Set static properties "macros = {}" and "getters = {}" on the class for the macroable to work.')
+		assert.throw(
+			fn,
+			'Set static properties "macros = {}" and "getters = {}" on the class for the macroable to work.'
+		)
 	})
 })

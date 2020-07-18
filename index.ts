@@ -10,6 +10,9 @@
 type MacroableFn<T> = (this: T, ...args: any[]) => any
 type MacroableMap = { [key: string]: MacroableFn<any> }
 
+/**
+ * Shape of the macroable constructor
+ */
 export interface MacroableConstructorContract<T extends any> {
 	macro(name: string, callback: MacroableFn<T>): void
 	getter(name: string, callback: MacroableFn<T>, singleton?: boolean): void
@@ -31,7 +34,9 @@ export abstract class Macroable {
 
 	constructor() {
 		if (!this.constructor['macros'] || !this.constructor['getters']) {
-			throw new Error('Set static properties "macros = {}" and "getters = {}" on the class for the macroable to work.')
+			throw new Error(
+				'Set static properties "macros = {}" and "getters = {}" on the class for the macroable to work.'
+			)
 		}
 	}
 
@@ -87,7 +92,11 @@ export abstract class Macroable {
 	 * console.log(new Macroable().time)
 	 * ```
 	 */
-	public static getter<T extends any = any>(name: string, callback: MacroableFn<T>, singleton: boolean = false) {
+	public static getter<T extends any = any>(
+		name: string,
+		callback: MacroableFn<T>,
+		singleton: boolean = false
+	) {
 		const wrappedCallback = singleton
 			? function wrappedCallback() {
 					const value = callback.bind(this)()

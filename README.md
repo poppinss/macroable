@@ -9,6 +9,12 @@ Base class for exposing external API to extend the class prototype in a more dec
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## Table of contents
+
+- [Traditional approach](#traditional-approach)
+- [Using macroable](#using-macroable)
+  - [Defining singleton getters](#defining-singleton-getters)
+  - [Hydrating the class](#hydrating-the-class)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
