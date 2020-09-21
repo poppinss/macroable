@@ -1,6 +1,7 @@
 <div align="center"><img src="https://res.cloudinary.com/adonisjs/image/upload/q_100/v1557762307/poppinss_iftxlt.jpg" width="600px"></div>
 
 # Macroable
+
 > Extend `class` prototype in style 😎
 
 [![circleci-image]][circleci-url] [![typescript-image]][typescript-url] [![npm-image]][npm-url] [![license-image]][license-url] [![audit-report-image]][audit-report-url]
@@ -37,7 +38,7 @@ Foo.prototype.greet = function () {
 Object.defineProperty(Foo.prototype, 'username', {
   get: function () {
     return 'virk'
-  }
+  },
 })
 ```
 
@@ -46,8 +47,7 @@ Object.defineProperty(Foo.prototype, 'username', {
 ```ts
 import { Macroable } from 'macroable'
 
-class Foo extends Macroable {
-}
+class Foo extends Macroable {}
 
 Foo.macros = {}
 Foo.getters = {}
@@ -70,6 +70,7 @@ Foo.getter('username', function () {
 You can see the API is simpler and less verbose. However, there are couple of extra benefits of using Macroable.
 
 ### Defining singleton getters
+
 Singleton getters are evaluated only once and then cached value is returned.
 
 ```js
@@ -79,6 +80,7 @@ Foo.getter('baseUrl', function () {
 ```
 
 ### Hydrating the class
+
 Using the `hydrate` method, you can remove macros and getters added on a given class.
 
 ```js
@@ -96,16 +98,12 @@ Foo.username // undefined
 ```
 
 [circleci-image]: https://img.shields.io/circleci/project/github/poppinss/macroable/master.svg?style=for-the-badge&logo=circleci
-[circleci-url]: https://circleci.com/gh/poppinss/macroable "circleci"
-
+[circleci-url]: https://circleci.com/gh/poppinss/macroable 'circleci'
 [typescript-image]: https://img.shields.io/badge/Typescript-294E80.svg?style=for-the-badge&logo=typescript
-[typescript-url]:  "typescript"
-
+[typescript-url]: "typescript"
 [npm-image]: https://img.shields.io/npm/v/macroable.svg?style=for-the-badge&logo=npm
-[npm-url]: https://npmjs.org/package/macroable "npm"
-
+[npm-url]: https://npmjs.org/package/macroable 'npm'
 [license-image]: https://img.shields.io/npm/l/macroable?color=blueviolet&style=for-the-badge
-[license-url]: LICENSE.md "license"
-
+[license-url]: LICENSE.md 'license'
 [audit-report-image]: https://img.shields.io/badge/-Audit%20Report-blueviolet?style=for-the-badge
-[audit-report-url]: https://htmlpreview.github.io/?https://github.com/poppinss/macroable/blob/develop/npm-audit.html "audit-report"
+[audit-report-url]: https://htmlpreview.github.io/?https://github.com/poppinss/macroable/blob/develop/npm-audit.html 'audit-report'
