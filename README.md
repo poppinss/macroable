@@ -4,7 +4,7 @@
 
 > Extend `class` prototype in style 😎
 
-[![circleci-image]][circleci-url] [![typescript-image]][typescript-url] [![npm-image]][npm-url] [![license-image]][license-url] [![audit-report-image]][audit-report-url]
+[![circleci-image]][circleci-url] [![typescript-image]][typescript-url] [![npm-image]][npm-url] [![license-image]][license-url] [![synk-image]][synk-url]
 
 Base class for exposing external API to extend the class prototype in a more declarative way.
 
@@ -99,11 +99,15 @@ Foo.username // undefined
 
 [circleci-image]: https://img.shields.io/circleci/project/github/poppinss/macroable/master.svg?style=for-the-badge&logo=circleci
 [circleci-url]: https://circleci.com/gh/poppinss/macroable 'circleci'
+
 [typescript-image]: https://img.shields.io/badge/Typescript-294E80.svg?style=for-the-badge&logo=typescript
 [typescript-url]: "typescript"
+
 [npm-image]: https://img.shields.io/npm/v/macroable.svg?style=for-the-badge&logo=npm
 [npm-url]: https://npmjs.org/package/macroable 'npm'
+
 [license-image]: https://img.shields.io/npm/l/macroable?color=blueviolet&style=for-the-badge
 [license-url]: LICENSE.md 'license'
-[audit-report-image]: https://img.shields.io/badge/-Audit%20Report-blueviolet?style=for-the-badge
-[audit-report-url]: https://htmlpreview.github.io/?https://github.com/poppinss/macroable/blob/develop/npm-audit.html 'audit-report'
+
+[synk-image]: https://img.shields.io/snyk/vulnerabilities/github/poppinss/manager?label=Synk%20Vulnerabilities&style=for-the-badge
+[synk-url]: https://snyk.io/test/github/poppinss/manager?targetFile=package.json "synk"
