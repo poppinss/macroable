@@ -7,15 +7,41 @@
  * file that was distributed with this source code.
  */
 
-type MacroableFn<T> = (this: T, ...args: any[]) => any
-type MacroableMap = { [key: string]: MacroableFn<any> }
+/**
+ * Shape of the Macro function
+ */
+type MacroFn<T, Args extends any[], ReturnValue extends any> = (
+	this: T,
+	...args: Args
+) => ReturnValue
+
+/**
+ * Shape of the Getter function
+ */
+type GetterFn<T, ReturnValue extends any> = (this: T) => ReturnValue
+
+/**
+ * Returns the typed variation of the macro by inspecting the
+ * interface declaration
+ */
+type GetMacroFn<T, K> = K extends keyof T
+	? T[K] extends (...args: infer A) => infer B
+		? MacroFn<T, A, B>
+		: MacroFn<T, any[], any>
+	: MacroFn<T, any[], any>
+
+/**
+ * Returns the typed variation of the getter by inspecting the
+ * interface declaration
+ */
+type GetGetterFn<T, K> = K extends keyof T ? GetterFn<T, T[K]> : GetterFn<T, any>
 
 /**
  * Shape of the macroable constructor
  */
 export interface MacroableConstructorContract<T extends any> {
-	macro(name: string, callback: MacroableFn<T>): void
-	getter(name: string, callback: MacroableFn<T>, singleton?: boolean): void
+	macro<K extends string>(name: K, callback: GetMacroFn<T, K>): void
+	getter<K extends string>(name: K, callback: GetGetterFn<T, K>, singleton?: boolean): void
 	hydrate(): void
 }
 
@@ -29,8 +55,8 @@ export interface MacroableConstructorContract<T extends any> {
  * 2. Can define singleton getters.
  */
 export abstract class Macroable {
-	protected static macros: MacroableMap
-	protected static getters: MacroableMap
+	protected static macros: { [key: string]: MacroFn<any, any[], any> }
+	protected static getters: { [key: string]: GetterFn<any, any> }
 
 	constructor() {
 		if (!this.constructor['macros'] || !this.constructor['getters']) {
@@ -53,7 +79,7 @@ export abstract class Macroable {
 	 * })
 	 * ```
 	 */
-	public static macro<T extends any = any>(name: string, callback: MacroableFn<T>) {
+	public static macro<T extends any>(name: string, callback: MacroFn<T, any[], any>) {
 		this.macros[name] = callback
 		this.prototype[name] = callback
 	}
@@ -61,7 +87,7 @@ export abstract class Macroable {
 	/**
 	 * Return the existing macro or null if it doesn't exists
 	 */
-	public static getMacro(name: string): MacroableFn<any> | undefined {
+	public static getMacro(name: string): MacroFn<any, any[], any> | undefined {
 		return this.macros[name]
 	}
 
@@ -94,7 +120,7 @@ export abstract class Macroable {
 	 */
 	public static getter<T extends any = any>(
 		name: string,
-		callback: MacroableFn<T>,
+		callback: GetterFn<T, any>,
 		singleton: boolean = false
 	) {
 		const wrappedCallback = singleton
@@ -117,7 +143,7 @@ export abstract class Macroable {
 	/**
 	 * Return the existing getter or null if it doesn't exists
 	 */
-	public static getGetter(name: string): MacroableFn<any> | undefined {
+	public static getGetter(name: string): GetterFn<any, any> | undefined {
 		return this.getters[name]
 	}
 
