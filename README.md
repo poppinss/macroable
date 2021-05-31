@@ -97,8 +97,8 @@ Foo.greet // undefined
 Foo.username // undefined
 ```
 
-[circleci-image]: https://img.shields.io/circleci/project/github/poppinss/macroable/master.svg?style=for-the-badge&logo=circleci
-[circleci-url]: https://circleci.com/gh/poppinss/macroable 'circleci'
+[gh-workflow-image]: https://img.shields.io/github/workflow/status/poppinss/macroable/test?style=for-the-badge
+[gh-workflow-url]: https://github.com/poppinss/macroable/actions/workflows/test.yml "Github action"
 
 [typescript-image]: https://img.shields.io/badge/Typescript-294E80.svg?style=for-the-badge&logo=typescript
 [typescript-url]: "typescript"
