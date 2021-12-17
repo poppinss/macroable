@@ -1,6 +1,7 @@
 require('@adonisjs/require-ts/build/register')
 
 const { configure } = require('japa')
+
 configure({
-  files: ['test.ts'],
+  files: ['test/**/*.spec.ts'],
 })

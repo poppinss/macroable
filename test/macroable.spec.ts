@@ -8,7 +8,7 @@
  */
 
 import test from 'japa'
-import { Macroable } from './index'
+import { Macroable } from '../index'
 
 class Parent extends Macroable {}
 Parent['macros'] = {}
