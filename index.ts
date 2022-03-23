@@ -79,8 +79,13 @@ export abstract class Macroable {
    * })
    * ```
    */
-  public static macro<T extends any>(name: string, callback: MacroFn<T, any[], any>) {
-    this.macros[name] = callback
+  public static macro<T extends any, K extends string>(
+    this: { new (...args: any): T },
+    name: string,
+    callback: GetMacroFn<T, K>
+  ) {
+    const self = this as unknown as typeof Macroable
+    self.macros[name] = callback
     this.prototype[name] = callback
   }
 
@@ -118,9 +123,10 @@ export abstract class Macroable {
    * console.log(new Macroable().time)
    * ```
    */
-  public static getter<T extends any = any>(
+  public static getter<T extends any, K extends string>(
+    this: { new (...args: any): T },
     name: string,
-    callback: GetterFn<T, any>,
+    callback: GetGetterFn<T, K>,
     singleton: boolean = false
   ) {
     const wrappedCallback = singleton
@@ -131,7 +137,8 @@ export abstract class Macroable {
         }
       : callback
 
-    this.getters[name] = wrappedCallback
+    const self = this as unknown as typeof Macroable
+    self.getters[name] = wrappedCallback
 
     Object.defineProperty(this.prototype, name, {
       get: wrappedCallback,
