@@ -79,10 +79,10 @@ export abstract class Macroable {
    * })
    * ```
    */
-  public static macro<T extends typeof Macroable>(
+  public static macro<T extends typeof Macroable, K extends string>(
     this: T,
     name: string,
-    callback: MacroFn<InstanceType<T>, any[], any>
+    callback: GetMacroFn<InstanceType<T>, K>
   ) {
     this.macros[name] = callback
     this.prototype[name] = callback
@@ -122,10 +122,10 @@ export abstract class Macroable {
    * console.log(new Macroable().time)
    * ```
    */
-  public static getter<T extends typeof Macroable>(
+  public static getter<T extends typeof Macroable, K extends string>(
     this: T,
     name: string,
-    callback: GetterFn<InstanceType<T>, any>,
+    callback: GetGetterFn<InstanceType<T>, K>,
     singleton: boolean = false
   ) {
     const wrappedCallback = singleton
