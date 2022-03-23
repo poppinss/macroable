@@ -58,7 +58,7 @@ export abstract class Macroable {
   protected static macros: { [key: string]: MacroFn<any, any[], any> }
   protected static getters: { [key: string]: GetterFn<any, any> }
 
-  constructor() {
+  constructor(..._: any[]) {
     if (!this.constructor['macros'] || !this.constructor['getters']) {
       throw new Error(
         'Set static properties "macros = {}" and "getters = {}" on the class for the macroable to work.'
@@ -79,7 +79,11 @@ export abstract class Macroable {
    * })
    * ```
    */
-  public static macro<T extends any>(name: string, callback: MacroFn<T, any[], any>) {
+  public static macro<T extends typeof Macroable>(
+    this: T,
+    name: string,
+    callback: MacroFn<InstanceType<T>, any[], any>
+  ) {
     this.macros[name] = callback
     this.prototype[name] = callback
   }
@@ -118,9 +122,10 @@ export abstract class Macroable {
    * console.log(new Macroable().time)
    * ```
    */
-  public static getter<T extends any = any>(
+  public static getter<T extends typeof Macroable>(
+    this: T,
     name: string,
-    callback: GetterFn<T, any>,
+    callback: GetterFn<InstanceType<T>, any>,
     singleton: boolean = false
   ) {
     const wrappedCallback = singleton
