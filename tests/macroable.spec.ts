@@ -98,7 +98,7 @@ test.group('Macroable | getter', () => {
     assert.equal(parent.getCount, 1)
     assert.equal(parent.getCount, 1)
     assert.equal(parent.getCount, 1)
-    assert.isFalse(Object.hasOwn(parent, 'getCount'))
+    assert.isTrue(Object.hasOwn(parent, 'getCount'))
     assert.equal(counter, 1)
   })
 })
