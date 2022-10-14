@@ -3,7 +3,7 @@
 
 [![gh-workflow-image]][gh-workflow-url] [![typescript-image]][typescript-url] [![npm-image]][npm-url] [![license-image]][license-url] [![synk-image]][synk-url]
 
-Macroable is a very simple implementation for adding properties and getters to the class prototype. You might not even need this package, if you are happy writing `Object.defineProperty` calls yourself.
+Macroable is an ergonomic implementation for adding properties and getters to the class prototype. You might not even need this package, if you are happy writing `Object.defineProperty` calls yourself.
 
 ## Usage
 Install the package from npm packages registry as follows.
@@ -117,10 +117,10 @@ You will have to use [module augmentation](https://www.typescriptlang.org/docs/h
 [typescript-image]: https://img.shields.io/badge/Typescript-294E80.svg?style=for-the-badge&logo=typescript
 [typescript-url]: "typescript"
 
-[npm-image]: https://img.shields.io/npm/v/macroable.svg?style=for-the-badge&logo=npm
-[npm-url]: https://npmjs.org/package/macroable 'npm'
+[npm-image]: https://img.shields.io/npm/v/@poppinss/macroable.svg?style=for-the-badge&logo=npm
+[npm-url]: https://npmjs.org/package/@poppinss/macroable 'npm'
 
-[license-image]: https://img.shields.io/npm/l/macroable?color=blueviolet&style=for-the-badge
+[license-image]: https://img.shields.io/npm/l/@poppinss/macroable?color=blueviolet&style=for-the-badge
 [license-url]: LICENSE.md 'license'
 
 [synk-image]: https://img.shields.io/snyk/vulnerabilities/github/poppinss/manager?label=Synk%20Vulnerabilities&style=for-the-badge
