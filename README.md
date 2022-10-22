@@ -3,7 +3,7 @@
 
 [![gh-workflow-image]][gh-workflow-url] [![typescript-image]][typescript-url] [![npm-image]][npm-url] [![license-image]][license-url] [![synk-image]][synk-url]
 
-Macroable is an ergonomic implementation for adding properties and getters to the class prototype. You might not even need this package, if you are happy writing `Object.defineProperty` calls yourself.
+Macroable offers a simple API for adding properties and getters to the class prototype. You might not even need this package, if you are happy writing `Object.defineProperty` calls yourself.
 
 ## Usage
 Install the package from npm packages registry as follows.
@@ -22,7 +22,7 @@ import { Macroable } from '@poppinss/macroable'
 export class Route extends Macroable {}
 ```
 
-Now, you can add properties to the Route class from outside. This is usually required, when you want the consumer of your classes to be able to extend them by adding custom properties.
+Now, you can add properties to the Route class from outside-in. This is usually needed, when you want the consumer of your classes to be able to extend them by adding custom properties.
 
 ## Macros
 Getters are added to the class prototype directly.
@@ -66,7 +66,7 @@ route.version // v1
 Adding a getter is same as writing the following code in JavaScript.
 
 ```ts
-Object.defineProperty(Route, 'version', {
+Object.defineProperty(Route.prototype, 'version', {
   get() {
     return 'v1'
   },
@@ -89,7 +89,7 @@ Mysql.getter('version', function () {
 Adding a singleton getter is same as writing the following code in JavaScript.
 
 ```ts
-Object.defineProperty(Mysql, 'version', {
+Object.defineProperty(Mysql.prototype, 'version', {
   get() {
     const value = this.config.driver.split('-')[1]
 
