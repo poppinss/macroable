@@ -11,7 +11,7 @@
  * Adds capabilities for extending the class from outside-in, in the form
  * of macros and getters.
  */
-export abstract class Macroable {
+export default abstract class Macroable {
   /**
    *
    * Macros are standard properties that gets added to the class prototype.

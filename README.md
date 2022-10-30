@@ -18,7 +18,7 @@ yarn add @poppinss/macroable
 And import the `Macroable` class.
 
 ```ts
-import { Macroable } from '@poppinss/macroable'
+import Macroable from '@poppinss/macroable'
 export class Route extends Macroable {}
 ```
 

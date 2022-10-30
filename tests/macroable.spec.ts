@@ -8,7 +8,7 @@
  */
 
 import { test } from '@japa/runner'
-import { Macroable } from '../index.js'
+import Macroable from '../index.js'
 
 test.group('Macroable | macro', () => {
   test('add a property to the class prototype', ({ expectTypeOf, assert }) => {
