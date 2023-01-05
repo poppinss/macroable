@@ -111,7 +111,7 @@ Object.defineProperty(Mysql.prototype, 'version', {
 ## TypeScript types
 You will have to use [module augmentation](https://www.typescriptlang.org/docs/handbook/declaration-merging.html#module-augmentation) in order to define the types for the dynamically added properties.
 
-[gh-workflow-image]: https://img.shields.io/github/workflow/status/poppinss/macroable/test?style=for-the-badge
+[gh-workflow-image]: https://img.shields.io/github/actions/workflow/status/poppinss/macroable/test.yml?style=for-the-badge
 [gh-workflow-url]: https://github.com/poppinss/macroable/actions/workflows/test.yml "Github action"
 
 [typescript-image]: https://img.shields.io/badge/Typescript-294E80.svg?style=for-the-badge&logo=typescript
