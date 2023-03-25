@@ -13,7 +13,7 @@ import Macroable from '../index.js'
 test.group('Macroable | macro', () => {
   test('add a property to the class prototype', ({ expectTypeOf, assert }) => {
     class Parent extends Macroable {
-      foo: string
+      declare foo: string
     }
 
     Parent.macro('foo', 'bar')
@@ -28,7 +28,7 @@ test.group('Macroable | macro', () => {
 
   test('add a property as a function', ({ expectTypeOf, assert }) => {
     class Parent extends Macroable {
-      foo: () => string
+      declare foo: () => string
       bar = 'bar'
     }
 
@@ -44,7 +44,7 @@ test.group('Macroable | macro', () => {
 
   test('add a property as an arrow function', ({ expectTypeOf, assert }) => {
     class Parent extends Macroable {
-      foo: () => string
+      declare foo: () => string
       bar = 'bar'
     }
 
@@ -62,7 +62,7 @@ test.group('Macroable | getter', () => {
     let counter = 0
 
     class Parent extends Macroable {
-      getCount: number
+      declare getCount: number
     }
 
     Parent.getter('getCount', function getCount() {
@@ -82,7 +82,7 @@ test.group('Macroable | getter', () => {
     let counter = 0
 
     class Parent extends Macroable {
-      getCount: number
+      declare getCount: number
     }
 
     Parent.getter(
