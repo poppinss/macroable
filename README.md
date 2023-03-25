@@ -68,7 +68,8 @@ Adding a getter is same as writing the following code in JavaScript.
 ```ts
 Object.defineProperty(Route.prototype, 'version', {
   get() {
-    return 'v1'
+    const value = callback()
+    return value
   },
   configurable: false,
   enumerable: false,
@@ -91,7 +92,7 @@ Adding a singleton getter is same as writing the following code in JavaScript.
 ```ts
 Object.defineProperty(Mysql.prototype, 'version', {
   get() {
-    const value = this.config.driver.split('-')[1]
+    const value = callback()
 
     // Cache value on the class instance
     Object.defineProperty(this, 'version', {
