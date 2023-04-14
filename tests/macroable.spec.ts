@@ -101,4 +101,18 @@ test.group('Macroable | getter', () => {
     assert.isTrue(Object.hasOwn(parent, 'getCount'))
     assert.equal(counter, 1)
   })
+
+  test('getter function should be called with parent this context', ({ assert, expectTypeOf }) => {
+    class Parent extends Macroable {
+      declare getter: any
+    }
+
+    Parent.getter('getter', function getter(this: Parent) {
+      expectTypeOf(this).toEqualTypeOf<Parent>()
+      return this
+    })
+
+    const parent = new Parent()
+    assert.equal(parent.getter, parent)
+  })
 })

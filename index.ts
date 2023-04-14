@@ -56,7 +56,7 @@ export default abstract class Macroable {
   ): void {
     Object.defineProperty(this.prototype, name, {
       get() {
-        const value = accumulator()
+        const value = accumulator.call(this)
 
         if (singleton) {
           Object.defineProperty(this, name, {

@@ -3,6 +3,7 @@ import { expectTypeOf } from '@japa/expect-type'
 import { specReporter } from '@japa/spec-reporter'
 import { runFailedTests } from '@japa/run-failed-tests'
 import { processCliArgs, configure, run } from '@japa/runner'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +24,7 @@ configure({
     files: ['tests/**/*.spec.ts'],
     plugins: [assert(), runFailedTests(), expectTypeOf()],
     reporters: [specReporter()],
-    importer: (filePath) => import(filePath),
+    importer: (filePath) => import(pathToFileURL(filePath).href),
   },
 })
 
