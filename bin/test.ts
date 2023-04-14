@@ -3,7 +3,7 @@ import { expectTypeOf } from '@japa/expect-type'
 import { specReporter } from '@japa/spec-reporter'
 import { runFailedTests } from '@japa/run-failed-tests'
 import { processCliArgs, configure, run } from '@japa/runner'
-import { fileURLToPath, pathToFileURL } from 'node:url'
+import { pathToFileURL } from 'node:url'
 
 /*
 |--------------------------------------------------------------------------
