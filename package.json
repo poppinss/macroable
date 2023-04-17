@@ -1,6 +1,6 @@
 {
 	"name": "@poppinss/macroable",
-	"version": "1.0.0-5",
+	"version": "1.0.0-6",
 	"description": "Extend classes from outside in using Macros and getters",
 	"main": "build/index.js",
 	"type": "module",
