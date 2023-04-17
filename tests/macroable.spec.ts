@@ -115,4 +115,78 @@ test.group('Macroable | getter', () => {
     const parent = new Parent()
     assert.equal(parent.getter, parent)
   })
+
+  test('re-assign getter', ({ assert }) => {
+    let counter = 0
+
+    class Parent extends Macroable {
+      declare getCount: number
+    }
+
+    Parent.getter(
+      'getCount',
+      function getCount() {
+        counter++
+        return counter
+      },
+      true
+    )
+
+    Parent.getter(
+      'getCount',
+      function getCount() {
+        counter += 2
+        return counter
+      },
+      true
+    )
+
+    const parent = new Parent()
+    assert.equal(parent.getCount, 2)
+    assert.equal(parent.getCount, 2)
+    assert.equal(parent.getCount, 2)
+    assert.isTrue(Object.hasOwn(parent, 'getCount'))
+    assert.equal(counter, 2)
+  })
+
+  test('fail when trying to overwrite instance value with a literal value', ({ assert }) => {
+    let counter = 0
+
+    class Parent extends Macroable {
+      declare getCount: number
+    }
+
+    Parent.getter(
+      'getCount',
+      function getCount() {
+        counter++
+        return counter
+      },
+      true
+    )
+
+    const parent = new Parent()
+    assert.equal(parent.getCount, 1)
+    assert.throws(() => (parent.getCount = 2), /Cannot assign to read only property/)
+  })
+
+  test('fail when trying to overwrite getter with a literal value', ({ assert }) => {
+    let counter = 0
+
+    class Parent extends Macroable {
+      declare getCount: number
+    }
+
+    Parent.getter(
+      'getCount',
+      function getCount() {
+        counter++
+        return counter
+      },
+      true
+    )
+
+    const parent = new Parent()
+    assert.throws(() => (parent.getCount = 2), /Cannot set property/)
+  })
 })

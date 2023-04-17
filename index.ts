@@ -69,7 +69,7 @@ export default abstract class Macroable {
 
         return value
       },
-      configurable: false,
+      configurable: true,
       enumerable: false,
     })
   }
