@@ -13,7 +13,7 @@
 	},
 	"scripts": {
 		"pretest": "npm run lint",
-		"test": "c8 npm run vscode:test",
+		"test": "c8 npm run quick:test",
 		"clean": "del-cli build",
 		"compile": "npm run lint && npm run clean && tsc",
 		"build": "npm run compile",
@@ -23,7 +23,7 @@
 		"format": "prettier --write .",
 		"lint": "eslint . --ext=.ts",
 		"sync-labels": "github-label-sync --labels .github/labels.json poppinss/macroable",
-		"vscode:test": "node --loader=ts-node/esm bin/test.ts"
+		"quick:test": "node --loader=ts-node/esm bin/test.ts"
 	},
 	"keywords": [
 		"macroable"
@@ -33,11 +33,8 @@
 	"devDependencies": {
 		"@commitlint/cli": "^17.6.6",
 		"@commitlint/config-conventional": "^17.6.6",
-		"@japa/assert": "^1.4.1",
-		"@japa/expect-type": "^1.0.3",
-		"@japa/run-failed-tests": "^1.1.1",
-		"@japa/runner": "^2.5.1",
-		"@japa/spec-reporter": "^1.3.3",
+		"@japa/assert": "^2.0.0-1",
+		"@japa/runner": "^3.0.0-2",
 		"@swc/core": "^1.3.67",
 		"@types/node": "^20.3.2",
 		"c8": "^8.0.0",
