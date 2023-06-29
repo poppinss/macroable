@@ -11,6 +11,9 @@
 	"exports": {
 		".": "./build/index.js"
 	},
+  "engines": {
+    "node": ">=18.16.0"
+  },
 	"scripts": {
 		"pretest": "npm run lint",
 		"test": "c8 npm run quick:test",
