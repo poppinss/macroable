@@ -1,6 +1,6 @@
 {
 	"name": "@poppinss/macroable",
-	"version": "1.0.0-6",
+	"version": "1.0.0-7",
 	"description": "Extend classes from outside in using Macros and getters",
 	"main": "build/index.js",
 	"type": "module",
@@ -11,9 +11,9 @@
 	"exports": {
 		".": "./build/index.js"
 	},
-  "engines": {
-    "node": ">=18.16.0"
-  },
+	"engines": {
+		"node": ">=18.16.0"
+	},
 	"scripts": {
 		"pretest": "npm run lint",
 		"test": "c8 npm run quick:test",
