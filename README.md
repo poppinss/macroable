@@ -1,7 +1,7 @@
 # @poppinss/macroable
 > Extend classes from outside in using Macros and getters
 
-[![gh-workflow-image]][gh-workflow-url] [![typescript-image]][typescript-url] [![npm-image]][npm-url] [![license-image]][license-url] [![synk-image]][synk-url]
+[![gh-workflow-image]][gh-workflow-url] [![typescript-image]][typescript-url] [![npm-image]][npm-url] [![license-image]][license-url]
 
 Macroable offers a simple API for adding properties and getters to the class prototype. You might not even need this package, if you are happy writing `Object.defineProperty` calls yourself.
 
@@ -112,8 +112,8 @@ Object.defineProperty(Mysql.prototype, 'version', {
 ## TypeScript types
 You will have to use [module augmentation](https://www.typescriptlang.org/docs/handbook/declaration-merging.html#module-augmentation) in order to define the types for the dynamically added properties.
 
-[gh-workflow-image]: https://img.shields.io/github/actions/workflow/status/poppinss/macroable/test.yml?style=for-the-badge
-[gh-workflow-url]: https://github.com/poppinss/macroable/actions/workflows/test.yml "Github action"
+[gh-workflow-image]: https://img.shields.io/github/actions/workflow/status/poppinss/macroable/checks.yml?style=for-the-badge
+[gh-workflow-url]: https://github.com/poppinss/macroable/actions/workflows/checks.yml "Github action"
 
 [typescript-image]: https://img.shields.io/badge/Typescript-294E80.svg?style=for-the-badge&logo=typescript
 [typescript-url]: "typescript"
@@ -123,6 +123,3 @@ You will have to use [module augmentation](https://www.typescriptlang.org/docs/h
 
 [license-image]: https://img.shields.io/npm/l/@poppinss/macroable?color=blueviolet&style=for-the-badge
 [license-url]: LICENSE.md 'license'
-
-[synk-image]: https://img.shields.io/snyk/vulnerabilities/github/poppinss/manager?label=Synk%20Vulnerabilities&style=for-the-badge
-[synk-url]: https://snyk.io/test/github/poppinss/manager?targetFile=package.json "synk"
