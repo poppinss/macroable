@@ -1,6 +1,6 @@
 {
 	"name": "@poppinss/macroable",
-	"version": "1.0.0-8",
+	"version": "1.0.0",
 	"description": "Extend classes from outside in using Macros and getters",
 	"main": "build/index.js",
 	"type": "module",
@@ -91,14 +91,14 @@
 		"extends": "@adonisjs/eslint-config/package"
 	},
 	"prettier": "@adonisjs/prettier-config",
-  "tsup": {
-    "entry": [
-      "./index.ts"
-    ],
-    "outDir": "./build",
-    "clean": true,
-    "format": "esm",
-    "dts": true,
-    "target": "esnext"
-  }
+	"tsup": {
+		"entry": [
+			"./index.ts"
+		],
+		"outDir": "./build",
+		"clean": true,
+		"format": "esm",
+		"dts": true,
+		"target": "esnext"
+	}
 }
