@@ -1,173 +1,76 @@
 /*
  * @poppinss/macroable
  *
- * (c) Harminder Virk <virk@adonisjs.com>
+ * (c) Poppinss
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
 /**
- * Shape of the Macro function
+ * Adds capabilities for extending the class from outside-in, in the form
+ * of macros and getters.
  */
-type MacroFn<T, Args extends any[], ReturnValue extends any> = (
-  this: T,
-  ...args: Args
-) => ReturnValue
-
-/**
- * Shape of the Getter function
- */
-type GetterFn<T, ReturnValue extends any> = (this: T) => ReturnValue
-
-/**
- * Returns the typed variation of the macro by inspecting the
- * interface declaration
- */
-type GetMacroFn<T, K> = K extends keyof T
-  ? T[K] extends (...args: infer A) => infer B
-    ? MacroFn<T, A, B>
-    : MacroFn<T, any[], any>
-  : MacroFn<T, any[], any>
-
-/**
- * Returns the typed variation of the getter by inspecting the
- * interface declaration
- */
-type GetGetterFn<T, K> = K extends keyof T ? GetterFn<T, T[K]> : GetterFn<T, any>
-
-/**
- * Shape of the macroable constructor
- */
-export interface MacroableConstructorContract<T extends any> {
-  macro<K extends string>(name: K, callback: GetMacroFn<T, K>): void
-  getter<K extends string>(name: K, callback: GetGetterFn<T, K>, singleton?: boolean): void
-  hydrate(): void
-}
-
-/**
- * Macroable is an abstract class to add ability to extend your class
- * prototype using better syntax.
- *
- * Macroable has handful of benefits over using traditional `prototype` approach.
- *
- * 1. Methods or properties added dynamically to the class can be removed using `hydrate` method.
- * 2. Can define singleton getters.
- */
-export abstract class Macroable {
-  protected static macros: { [key: string]: MacroFn<any, any[], any> }
-  protected static getters: { [key: string]: GetterFn<any, any> }
-
-  constructor() {
-    if (!this.constructor['macros'] || !this.constructor['getters']) {
-      throw new Error(
-        'Set static properties "macros = {}" and "getters = {}" on the class for the macroable to work.'
-      )
-    }
-  }
-
+export default abstract class Macroable {
   /**
-   * Add a macro to the class. This method is a better to manually adding
-   * to `class.prototype.method`.
    *
-   * Also macros added using `Macroable.macro` can be cleared anytime
+   * Macros are standard properties that gets added to the class prototype.
    *
-   * @example
-   * ```js
-   * Macroable.macro('getUsername', function () {
-   *   return 'virk'
-   * })
+   * ```ts
+   * MyClass.macro('foo', 'bar')
    * ```
    */
-  public static macro<T extends any, K extends string>(
-    this: { new (...args: any): T },
-    name: string,
-    callback: GetMacroFn<T, K>
-  ) {
-    const self = this as unknown as typeof Macroable
-    self.macros[name] = callback
-    this.prototype[name] = callback
+  static macro<T extends { new (...args: any[]): any }, K extends keyof InstanceType<T>>(
+    this: T,
+    name: K,
+    value: InstanceType<T>[K]
+  ): void {
+    this.prototype[name] = value
   }
 
   /**
-   * Return the existing macro or null if it doesn't exists
-   */
-  public static getMacro(name: string): MacroFn<any, any[], any> | undefined {
-    return this.macros[name]
-  }
-
-  /**
-   * Returns a boolean telling if a macro exists
-   */
-  public static hasMacro(name: string): boolean {
-    return !!this.getMacro(name)
-  }
-
-  /**
-   * Define a getter, which is invoked everytime the value is accessed. This method
-   * also allows adding single getters, whose value is cached after first time
    *
-   * @example
-   * ```js
-   * Macroable.getter('time', function () {
-   *   return new Date().getTime()
+   * Getters are added to the class prototype using the Object.defineProperty.
+   *
+   * ```ts
+   * MyClass.getter('foo', function foo () {
+   *   return 'bar'
    * })
+   * ```
    *
-   * console.log(new Macroable().time)
+   * You can add a singleton getter by enabling the `singleton` flag.
    *
-   * // Singletons
-   * Macroable.getter('time', function () {
-   *   return new Date().getTime()
-   * }, true)
+   * ```ts
+   * const singleton = true
    *
-   * console.log(new Macroable().time)
+   * MyClass.getter('foo', function foo () {
+   *   return 'bar'
+   * }, singleton)
    * ```
    */
-  public static getter<T extends any, K extends string>(
-    this: { new (...args: any): T },
-    name: string,
-    callback: GetGetterFn<T, K>,
+  static getter<T extends { new (...args: any[]): any }, K extends keyof InstanceType<T>>(
+    this: T,
+    name: K,
+    accumulator: () => InstanceType<T>[K],
     singleton: boolean = false
-  ) {
-    const wrappedCallback = singleton
-      ? function wrappedCallback() {
-          const value = callback.bind(this)()
-          Object.defineProperty(this, name, { value, configurable: true })
-          return value
-        }
-      : callback
-
-    const self = this as unknown as typeof Macroable
-    self.getters[name] = wrappedCallback
-
+  ): void {
     Object.defineProperty(this.prototype, name, {
-      get: wrappedCallback,
+      get() {
+        const value = accumulator.call(this)
+
+        if (singleton) {
+          Object.defineProperty(this, name, {
+            configurable: false,
+            enumerable: false,
+            value: value,
+            writable: false,
+          })
+        }
+
+        return value
+      },
       configurable: true,
-      enumerable: true,
+      enumerable: false,
     })
-  }
-
-  /**
-   * Return the existing getter or null if it doesn't exists
-   */
-  public static getGetter(name: string): GetterFn<any, any> | undefined {
-    return this.getters[name]
-  }
-
-  /**
-   * Returns a boolean telling if a getter exists
-   */
-  public static hasGetter(name: string): boolean {
-    return !!this.getGetter(name)
-  }
-
-  /**
-   * Cleanup getters and macros from the class
-   */
-  public static hydrate() {
-    Object.keys(this.macros).forEach((key) => Reflect.deleteProperty(this.prototype, key))
-    Object.keys(this.getters).forEach((key) => Reflect.deleteProperty(this.prototype, key))
-    this.macros = {}
-    this.getters = {}
   }
 }

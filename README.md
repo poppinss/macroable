@@ -1,113 +1,125 @@
-<div align="center"><img src="https://res.cloudinary.com/adonisjs/image/upload/q_100/v1557762307/poppinss_iftxlt.jpg" width="600px"></div>
+# @poppinss/macroable
+> Extend classes from outside in using Macros and getters
 
-# Macroable
+[![gh-workflow-image]][gh-workflow-url] [![typescript-image]][typescript-url] [![npm-image]][npm-url] [![license-image]][license-url]
 
-> Extend `class` prototype in style 😎
+Macroable offers a simple API for adding properties and getters to the class prototype. You might not even need this package, if you are happy writing `Object.defineProperty` calls yourself.
 
-[![gh-workflow-image]][gh-workflow-url] [![typescript-image]][typescript-url] [![npm-image]][npm-url] [![license-image]][license-url] [![synk-image]][synk-url]
+## Usage
+Install the package from npm packages registry as follows.
 
-Base class for exposing external API to extend the class prototype in a more declarative way.
+```sh
+npm i @poppinss/macroable
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-## Table of contents
-
-- [Traditional approach](#traditional-approach)
-- [Using macroable](#using-macroable)
-  - [Defining singleton getters](#defining-singleton-getters)
-  - [Hydrating the class](#hydrating-the-class)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-## Traditional approach
-
-```js
-class Foo {}
-module.exports = Foo
+# yarn lovers
+yarn add @poppinss/macroable
 ```
 
-Someone can extend it follows.
+And import the `Macroable` class.
 
-```js
-const Foo = require('./Foo')
-Foo.prototype.greet = function () {
-  return 'Hello!'
+```ts
+import Macroable from '@poppinss/macroable'
+export class Route extends Macroable {}
+```
+
+Now, you can add properties to the Route class from outside-in. This is usually needed, when you want the consumer of your classes to be able to extend them by adding custom properties.
+
+## Macros
+Getters are added to the class prototype directly.
+
+```ts
+Route.macro('head', function (uri, callback) {
+  return this.route(['HEAD'], uri, callback)
+})
+```
+
+And now, you can will be use the `head` method from an instance of the `Route` class.
+
+```ts
+const route = new Route()
+route.head('/', () => {})
+```
+
+Adding a macro is same as writing the following code in JavaScript.
+
+```ts
+Route.prototype.head = function () {
 }
+```
 
-// or add getter as follow
-Object.defineProperty(Foo.prototype, 'username', {
-  get: function () {
-    return 'virk'
+## Getters
+Getters are added to the class prototype using the `Object.defineProperty`. The implementation of a getter is always a function.
+
+```ts
+Route.getter('version', function () {
+  return 'v1'
+})
+```
+
+And now access the version as follows.
+
+```ts
+const route = new Route()
+route.version // v1
+```
+
+Adding a getter is same as writing the following code in JavaScript.
+
+```ts
+Object.defineProperty(Route.prototype, 'version', {
+  get() {
+    const value = callback()
+    return value
   },
+  configurable: false,
+  enumerable: false,
 })
 ```
 
-## Using macroable
+## Singleton getters
+Singleton getters are also defined on the class prototype. However, their values are cached after the first access.
 
 ```ts
-import { Macroable } from 'macroable'
+const singleton = true
 
-class Foo extends Macroable {}
-
-Foo.macros = {}
-Foo.getters = {}
-
-export default Foo
+Mysql.getter('version', function () {
+  return this.config.driver.split('-')[1]
+}, singleton)
 ```
+
+Adding a singleton getter is same as writing the following code in JavaScript.
 
 ```ts
-import Foo from './Foo'
+Object.defineProperty(Mysql.prototype, 'version', {
+  get() {
+    const value = callback()
 
-Foo.macro('greet', function () {
-  return 'Hello!'
-})
+    // Cache value on the class instance
+    Object.defineProperty(this, 'version', {
+      configurable: false,
+      enumerable: false,
+      value: value,
+      writable: false,
+    })
 
-Foo.getter('username', function () {
-  return 'virk'
+    return value
+  },
+  configurable: false,
+  enumerable: false,
 })
 ```
 
-You can see the API is simpler and less verbose. However, there are couple of extra benefits of using Macroable.
+## TypeScript types
+You will have to use [module augmentation](https://www.typescriptlang.org/docs/handbook/declaration-merging.html#module-augmentation) in order to define the types for the dynamically added properties.
 
-### Defining singleton getters
-
-Singleton getters are evaluated only once and then cached value is returned.
-
-```js
-Foo.getter('baseUrl', function () {
-  return lazilyEvaluateAndReturnUrl()
-}, true) 👈
-```
-
-### Hydrating the class
-
-Using the `hydrate` method, you can remove macros and getters added on a given class.
-
-```js
-Foo.macro('greet', function (name) {
-  return `Hello ${name}!`
-})
-
-Foo.getter('username', function () {
-  return 'virk'
-})
-
-Foo.hydrate()  👈
-Foo.greet // undefined
-Foo.username // undefined
-```
-
-[gh-workflow-image]: https://img.shields.io/github/workflow/status/poppinss/macroable/test?style=for-the-badge
-[gh-workflow-url]: https://github.com/poppinss/macroable/actions/workflows/test.yml "Github action"
+[gh-workflow-image]: https://img.shields.io/github/actions/workflow/status/poppinss/macroable/checks.yml?style=for-the-badge
+[gh-workflow-url]: https://github.com/poppinss/macroable/actions/workflows/checks.yml "Github action"
 
 [typescript-image]: https://img.shields.io/badge/Typescript-294E80.svg?style=for-the-badge&logo=typescript
 [typescript-url]: "typescript"
 
-[npm-image]: https://img.shields.io/npm/v/macroable.svg?style=for-the-badge&logo=npm
-[npm-url]: https://npmjs.org/package/macroable 'npm'
+[npm-image]: https://img.shields.io/npm/v/@poppinss/macroable.svg?style=for-the-badge&logo=npm
+[npm-url]: https://npmjs.org/package/@poppinss/macroable 'npm'
 
-[license-image]: https://img.shields.io/npm/l/macroable?color=blueviolet&style=for-the-badge
+[license-image]: https://img.shields.io/npm/l/@poppinss/macroable?color=blueviolet&style=for-the-badge
 [license-url]: LICENSE.md 'license'
-
-[synk-image]: https://img.shields.io/snyk/vulnerabilities/github/poppinss/manager?label=Synk%20Vulnerabilities&style=for-the-badge
-[synk-url]: https://snyk.io/test/github/poppinss/manager?targetFile=package.json "synk"
