@@ -5,7 +5,9 @@
 	"main": "build/index.js",
 	"type": "module",
 	"files": [
-		"build"
+		"build",
+    "!build/bin",
+    "!build/tests"
 	],
 	"exports": {
 		".": "./build/index.js"
