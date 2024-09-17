@@ -69,7 +69,8 @@
 		"outDir": "./build",
 		"clean": true,
 		"format": "esm",
-		"dts": true,
+		"dts": false,
+    "sourcemap": true,
 		"target": "esnext"
 	},
 	"release-it": {
