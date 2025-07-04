@@ -5,10 +5,10 @@ on:
   - workflow_call
 jobs:
   test:
-    uses: poppinss/.github/.github/workflows/test.yml@main
+    uses: poppinss/.github/.github/workflows/test.yml@next
 
   lint:
-    uses: poppinss/.github/.github/workflows/lint.yml@main
+    uses: poppinss/.github/.github/workflows/lint.yml@next
 
   typecheck:
-    uses: poppinss/.github/.github/workflows/typecheck.yml@main
+    uses: poppinss/.github/.github/workflows/typecheck.yml@next
