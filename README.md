@@ -47,6 +47,29 @@ Route.prototype.head = function () {
 }
 ```
 
+## Instance properties
+Since, macros are defined on the prototype of the class and therefore they loose the `this` context when destructured from the class instance. For example:
+
+```ts
+HttpContext.macro('getUser', function (this: HttpContext) {
+  return this.auth.user
+})
+
+const { getUser } = ctx
+getUser() // ❌ Error: Cannot read property auth of undefined
+```
+
+In order to fix this issue, the properties that can be destructured must be defined as instance properties on the class.
+
+```ts
+HttpContext.instanceProperty('getUser', function (this: HttpContext) {
+  return this.auth.user
+})
+
+const { getUser } = ctx
+getUser() // ✅ Works fine
+```
+
 ## Getters
 Getters are added to the class prototype using the `Object.defineProperty`. The implementation of a getter is always a function.
 

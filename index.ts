@@ -26,28 +26,29 @@ export default abstract class Macroable {
   static macro<T extends { new (...args: any[]): any }, K extends keyof InstanceType<T>>(
     this: T,
     name: K,
-    value: InstanceType<T>[K],
-    isInstanceProperty: boolean = false
+    value: InstanceType<T>[K]
   ): void {
-    if (isInstanceProperty) {
-      const self = this as unknown as typeof Macroable
+    this.prototype[name] = value
+  }
 
-      if (!self.hasOwnProperty('instanceMacros')) {
-        const inheritedProperties: Set<any> = self.instanceMacros
+  static instanceProperty<T extends { new (...args: any[]): any }, K extends keyof InstanceType<T>>(
+    this: T,
+    name: K,
+    value: InstanceType<T>[K]
+  ): void {
+    const self = this as unknown as typeof Macroable
 
-        Object.defineProperty(self, 'instanceMacros', {
-          value: new Set(inheritedProperties),
-          configurable: true,
-          enumerable: true,
-          writable: true,
-        })
-      }
-
-      self.instanceMacros.add({ key: name, value })
-      return
+    if (!self.hasOwnProperty('instanceMacros')) {
+      const inheritedProperties: Set<any> = self.instanceMacros
+      Object.defineProperty(self, 'instanceMacros', {
+        value: new Set(inheritedProperties),
+        configurable: true,
+        enumerable: true,
+        writable: true,
+      })
     }
 
-    this.prototype[name] = value
+    self.instanceMacros.add({ key: name, value })
   }
 
   /**

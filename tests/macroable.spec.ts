@@ -19,14 +19,9 @@ test.group('Macroable | macro', () => {
     Parent.macro('foo', 'bar')
     const parent = new Parent()
 
-    expectTypeOf(Parent.macro<typeof Parent, 'foo'>).parameters.toEqualTypeOf<
-      ['foo', string, isInstanceProperty?: boolean]
-    >()
+    expectTypeOf(Parent.macro<typeof Parent, 'foo'>).parameters.toEqualTypeOf<['foo', string]>()
     // @ts-expect-error
-    expectTypeOf(Parent.macro<typeof Parent, 'bar'>).parameters.toEqualTypeOf<
-      // @ts-expect-error
-      ['bar', string, isInstanceProperty?: boolean]
-    >()
+    expectTypeOf(Parent.macro<typeof Parent, 'bar'>).parameters.toEqualTypeOf<['bar', string]>()
     assert.equal(parent.foo, 'bar')
     assert.isFalse(Object.hasOwn(parent, 'foo'))
   })
@@ -60,21 +55,19 @@ test.group('Macroable | macro', () => {
 
     assert.throws(() => new Parent().foo(), "Cannot read properties of undefined (reading 'bar')")
   })
+})
 
-  test('destructure macro and retain this', ({ expectTypeOf, assert }) => {
+test.group('Macroable | instanceProperty', () => {
+  test('destructure instance property and retain this', ({ expectTypeOf, assert }) => {
     class Parent extends Macroable {
       declare foo: () => string
       bar = 'bar'
     }
 
-    Parent.macro(
-      'foo',
-      function foo(this: Parent) {
-        expectTypeOf(this).toEqualTypeOf<Parent>()
-        return this.bar
-      },
-      true
-    )
+    Parent.instanceProperty('foo', function foo(this: Parent) {
+      expectTypeOf(this).toEqualTypeOf<Parent>()
+      return this.bar
+    })
 
     const parent = new Parent()
     const { foo } = parent
@@ -107,28 +100,15 @@ test.group('Macroable | macro', () => {
       }
     }
 
-    BaseUser.macro(
-      'getCreatedAt',
-      function (this: BaseUser) {
-        return this.createdAt
-      },
-      true
-    )
-    BaseUser.macro(
-      'getUpdatedAt',
-      function (this: BaseUser) {
-        return this.updatedAt
-      },
-      true
-    )
-
-    User.macro(
-      'getName',
-      function foo(this: User) {
-        return this.name
-      },
-      true
-    )
+    BaseUser.instanceProperty('getCreatedAt', function (this: BaseUser) {
+      return this.createdAt
+    })
+    BaseUser.instanceProperty('getUpdatedAt', function (this: BaseUser) {
+      return this.updatedAt
+    })
+    User.instanceProperty('getName', function foo(this: User) {
+      return this.name
+    })
 
     const user = new User('virk', '2020-10-03', '2020-10-04')
     const { getName, getCreatedAt, getUpdatedAt } = user
