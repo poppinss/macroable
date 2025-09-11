@@ -12,6 +12,9 @@
  * of macros and getters.
  */
 export default abstract class Macroable {
+  protected static instanceMacros: Set<{ key: string | symbol | number; value: unknown }> =
+    new Set()
+
   /**
    *
    * Macros are standard properties that gets added to the class prototype.
@@ -23,8 +26,27 @@ export default abstract class Macroable {
   static macro<T extends { new (...args: any[]): any }, K extends keyof InstanceType<T>>(
     this: T,
     name: K,
-    value: InstanceType<T>[K]
+    value: InstanceType<T>[K],
+    isInstanceProperty: boolean = false
   ): void {
+    if (isInstanceProperty) {
+      const self = this as unknown as typeof Macroable
+
+      if (!self.hasOwnProperty('instanceMacros')) {
+        const inheritedProperties: Set<any> = self.instanceMacros
+
+        Object.defineProperty(self, 'instanceMacros', {
+          value: new Set(inheritedProperties),
+          configurable: true,
+          enumerable: true,
+          writable: true,
+        })
+      }
+
+      self.instanceMacros.add({ key: name, value })
+      return
+    }
+
     this.prototype[name] = value
   }
 
@@ -71,6 +93,14 @@ export default abstract class Macroable {
       },
       configurable: true,
       enumerable: false,
+    })
+  }
+
+  constructor() {
+    const self = this as any
+    const Constructor = this.constructor as typeof Macroable
+    Constructor.instanceMacros.forEach(({ key, value }) => {
+      self[key] = typeof value === 'function' ? value.bind(this) : value
     })
   }
 }

@@ -19,9 +19,14 @@ test.group('Macroable | macro', () => {
     Parent.macro('foo', 'bar')
     const parent = new Parent()
 
-    expectTypeOf(Parent.macro<typeof Parent, 'foo'>).parameters.toEqualTypeOf<['foo', string]>()
+    expectTypeOf(Parent.macro<typeof Parent, 'foo'>).parameters.toEqualTypeOf<
+      ['foo', string, isInstanceProperty?: boolean]
+    >()
     // @ts-expect-error
-    expectTypeOf(Parent.macro<typeof Parent, 'bar'>).parameters.toEqualTypeOf<['bar', string]>()
+    expectTypeOf(Parent.macro<typeof Parent, 'bar'>).parameters.toEqualTypeOf<
+      // @ts-expect-error
+      ['bar', string, isInstanceProperty?: boolean]
+    >()
     assert.equal(parent.foo, 'bar')
     assert.isFalse(Object.hasOwn(parent, 'foo'))
   })
@@ -54,6 +59,83 @@ test.group('Macroable | macro', () => {
     })
 
     assert.throws(() => new Parent().foo(), "Cannot read properties of undefined (reading 'bar')")
+  })
+
+  test('destructure macro and retain this', ({ expectTypeOf, assert }) => {
+    class Parent extends Macroable {
+      declare foo: () => string
+      bar = 'bar'
+    }
+
+    Parent.macro(
+      'foo',
+      function foo(this: Parent) {
+        expectTypeOf(this).toEqualTypeOf<Parent>()
+        return this.bar
+      },
+      true
+    )
+
+    const parent = new Parent()
+    const { foo } = parent
+    assert.equal(foo(), 'bar')
+  })
+
+  test('define instance properties with multi-layered inheritance', ({ assert }) => {
+    class BaseUser extends Macroable {
+      declare getCreatedAt: () => string
+      declare getUpdatedAt: () => string
+
+      constructor(
+        protected createdAt: string,
+        protected updatedAt: string
+      ) {
+        super()
+        this.createdAt = createdAt
+        this.updatedAt = updatedAt
+      }
+    }
+
+    class User extends BaseUser {
+      declare getName: () => string
+      constructor(
+        protected name: string,
+        createdAt: string,
+        updatedAt: string
+      ) {
+        super(createdAt, updatedAt)
+      }
+    }
+
+    BaseUser.macro(
+      'getCreatedAt',
+      function (this: BaseUser) {
+        return this.createdAt
+      },
+      true
+    )
+    BaseUser.macro(
+      'getUpdatedAt',
+      function (this: BaseUser) {
+        return this.updatedAt
+      },
+      true
+    )
+
+    User.macro(
+      'getName',
+      function foo(this: User) {
+        return this.name
+      },
+      true
+    )
+
+    const user = new User('virk', '2020-10-03', '2020-10-04')
+    const { getName, getCreatedAt, getUpdatedAt } = user
+
+    assert.equal(getName(), 'virk')
+    assert.equal(getCreatedAt(), '2020-10-03')
+    assert.equal(getUpdatedAt(), '2020-10-04')
   })
 })
 
@@ -113,7 +195,37 @@ test.group('Macroable | getter', () => {
     })
 
     const parent = new Parent()
-    assert.equal(parent.getter, parent)
+    assert.strictEqual(parent.getter, parent)
+  })
+
+  test('destructure getter and retain this', ({ assert, expectTypeOf }) => {
+    class Parent extends Macroable {
+      declare getter: any
+    }
+
+    Parent.getter('getter', function getter(this: Parent) {
+      expectTypeOf(this).toEqualTypeOf<Parent>()
+      return this
+    })
+
+    const parent = new Parent()
+    const { getter } = parent
+    assert.strictEqual(getter, parent)
+  })
+
+  test('destructure getter values and retain this', ({ assert, expectTypeOf }) => {
+    class Parent extends Macroable {
+      declare getter: { self: Parent }
+    }
+
+    Parent.getter('getter', function getter(this: Parent) {
+      expectTypeOf(this).toEqualTypeOf<Parent>()
+      return { self: this }
+    })
+
+    const parent = new Parent()
+    const { self } = parent.getter
+    assert.strictEqual(self, parent)
   })
 
   test('re-assign getter', ({ assert }) => {
