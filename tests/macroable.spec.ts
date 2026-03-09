@@ -74,6 +74,46 @@ test.group('Macroable | instanceProperty', () => {
     assert.equal(foo(), 'bar')
   })
 
+  test('preserve custom properties on function values', ({ assert }) => {
+    class Parent extends Macroable {
+      declare serialize: (() => string) & { withoutWrapping: () => string }
+    }
+
+    const serialize = function () {
+      return 'wrapped'
+    } as (() => string) & { withoutWrapping: () => string }
+    serialize.withoutWrapping = function () {
+      return 'unwrapped'
+    }
+
+    Parent.instanceProperty('serialize', serialize)
+
+    const parent = new Parent()
+    assert.equal(parent.serialize(), 'wrapped')
+    assert.isFunction(parent.serialize.withoutWrapping)
+    assert.equal(parent.serialize.withoutWrapping(), 'unwrapped')
+  })
+
+  test('preserve custom properties on function values when destructured', ({ assert }) => {
+    class Parent extends Macroable {
+      declare serialize: (() => string) & { withoutWrapping: () => string }
+    }
+
+    const serialize = function () {
+      return 'wrapped'
+    } as (() => string) & { withoutWrapping: () => string }
+    serialize.withoutWrapping = function () {
+      return 'unwrapped'
+    }
+
+    Parent.instanceProperty('serialize', serialize)
+
+    const { serialize: fn } = new Parent()
+    assert.equal(fn(), 'wrapped')
+    assert.isFunction(fn.withoutWrapping)
+    assert.equal(fn.withoutWrapping(), 'unwrapped')
+  })
+
   test('define instance properties with multi-layered inheritance', ({ assert }) => {
     class BaseUser extends Macroable {
       declare getCreatedAt: () => string

@@ -174,7 +174,15 @@ export default abstract class Macroable {
     const self = this as any
     const Constructor = this.constructor as typeof Macroable
     Constructor.instanceMacros.forEach(({ key, value }) => {
-      self[key] = typeof value === 'function' ? value.bind(this) : value
+      if (typeof value === 'function') {
+        const boundFn = value.bind(this)
+        for (const prop of Object.keys(value)) {
+          boundFn[prop] = value[prop]
+        }
+        self[key] = boundFn
+      } else {
+        self[key] = value
+      }
     })
   }
 }
