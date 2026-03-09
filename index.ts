@@ -177,7 +177,7 @@ export default abstract class Macroable {
       if (typeof value === 'function') {
         const boundFn = value.bind(this)
         for (const prop of Object.keys(value)) {
-          boundFn[prop] = value[prop]
+          boundFn[prop] = (value as any)[prop]
         }
         self[key] = boundFn
       } else {
