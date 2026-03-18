@@ -157,6 +157,28 @@ test.group('Macroable | instanceProperty', () => {
     assert.equal(getCreatedAt(), '2020-10-03')
     assert.equal(getUpdatedAt(), '2020-10-04')
   })
+
+  test('pass correct this context to custom properties on function values', ({ assert }) => {
+    class Parent extends Macroable {
+      declare serialize: (() => this) & {
+        withoutWrapping: () => Parent
+      }
+    }
+
+    const serialize = function () {
+      return this
+    } as ((this: Parent) => Parent) & { withoutWrapping: (this: Parent) => Parent }
+    serialize.withoutWrapping = function () {
+      return this
+    }
+
+    Parent.instanceProperty('serialize', serialize)
+
+    const { serialize: fn } = new Parent()
+    assert.instanceOf(fn(), Parent)
+    assert.isFunction(fn.withoutWrapping)
+    assert.instanceOf(fn.withoutWrapping(), Parent)
+  })
 })
 
 test.group('Macroable | getter', () => {
