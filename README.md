@@ -94,7 +94,7 @@ Object.defineProperty(Route.prototype, 'version', {
     const value = callback()
     return value
   },
-  configurable: false,
+  configurable: true,
   enumerable: false,
 })
 ```
@@ -127,7 +127,7 @@ Object.defineProperty(Mysql.prototype, 'version', {
 
     return value
   },
-  configurable: false,
+  configurable: true,
   enumerable: false,
 })
 ```
